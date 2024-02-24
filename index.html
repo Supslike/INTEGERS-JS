@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continuous Train</title>
+    <link rel="shortcut icon" href="head.png" type="image/x-icon">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            position: relative;
+            height: 100vh;
+            background-image: url("bg.avif");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .train_part {
+            background-image: url("part.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .train-tracks {
+            position: absolute;
+            display: flex;
+            height: 50vh;
+            top: 45vh;
+            left: 150%;
+        }
+
+        .backdrop-filter {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            backdrop-filter: brightness(80%);
+        }
+
+        img {
+            filter: saturate(85%);
+            width: auto;
+            height: 100%;
+        }
+
+        .head {
+            position: relative;
+            height: 100%;
+            width: fit-content;
+            display: flex;
+        }
+        .part {
+            position: relative;
+            height: 100%;
+            width: fit-content;
+            display: flex;
+            top: 3.5%;
+        }
+
+        h1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-size: 50px;
+            text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .green {
+            position: absolute;
+            background: radial-gradient(rgba(52, 252, 45, 1), rgba(0, 0, 0, 0));
+            opacity: 1;
+            width: 150px;
+            height: 100px;
+            border-radius: 50%;
+            z-index: -1;
+            animation: blink 1s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+
+        .red {
+            position: absolute;
+            top: 45vh;
+            left: 8%;
+            background: radial-gradient(rgb(252, 45, 45), rgba(0, 0, 0, 0));
+            opacity: 1;
+            width: 150px;
+            height: 100px;
+            border-radius: 50%;
+            z-index: -1;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        .green {
+            position: absolute;
+            top: 45vh;
+            left: 15.5%;
+            background: radial-gradient(rgba(52, 252, 45, 1), rgba(0, 0, 0, 0));
+            opacity: 1;
+            width: 150px;
+            height: 100px;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 0;
+            }
+            49% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="backdrop-filter"></div>
+    <div class="green"></div>
+    <div class="red"></div>
+    <div class="train-tracks" id="tracks">
+        <div class="head">
+            <img src="head.png" alt="">
+            <h1>1</h1>
+        </div>
+    </div>
+    <script>
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function move_train() {
+            const starting_number = Number(getComputedStyle(container).left.replace("px", ""))
+            while (true) {
+                await sleep(1)
+                container.style.left = Number(getComputedStyle(container).left.replace("px", "")) - 5 + "px";
+                if (Number(getComputedStyle(container).left.replace("px", "")) < `-${Number(getComputedStyle(container).width.replace("px", "") + 1500)}`) {
+                    container.style.left = starting_number + "px"
+                }
+            }
+        }
+
+        const container = document.getElementById("tracks");
+        let answer = 0
+        while (true) {
+            answer = Number(prompt("Put a number greater than 0: "));
+            if (answer > 0) {
+                break
+            }
+        }
+        for (let i = 2; i < answer + 1; i++) {
+            const new_part = document.createElement("div");
+            new_part.className = "part";
+            const new_pic = document.createElement("img");
+            new_pic.src = "part.png";
+            const new_text = document.createElement("h1");
+            new_text.textContent = i
+            new_part.appendChild(new_pic);
+            new_part.appendChild(new_text);
+            container.appendChild(new_part);
+        }
+
+        move_train()
+        
+    </script>
+</body>
+</html>
